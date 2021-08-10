@@ -53,69 +53,70 @@ Complete!
 1. Observer 방식 : Observer 인터페이스를 구현한 객체를 subscribe해서 소비자를 추가
 subscribe의 return type은 Unit
 
-    ```kotlin
-    val observer = object : Observer<Int> {
-            override fun onComplete() {
-                // Observable이 완료된 경우
-            }
-            override fun onSubscribe(d: Disposable) {
-                // Observable이 데이터 전달할 준비가 되었을 때.
-                // 작업 취소를 위한 Disposable에 대한 레퍼런스를 여기서 받음
-            }
-            override fun onNext(t: Int) {
-                // Observable이 데이터를 전달할 때 호출
-            }
-            override fun onError(e: Throwable) {
-                // Observable이 에러를 전달할 때 호출. Error시 Complete없이 종료다.
-            }
-        }
-        Observable.just(1, 2, 3, 4).subscribe(observer)
-    ```
+```kotlin
+val observer = object : Observer<Int> {
+    override fun onComplete() {
+     	// Observable이 완료된 경우
+    }
+	
+    override fun onSubscribe(d: Disposable) {
+    	// Observable이 데이터 전달할 준비가 되었을 때.
+    	// 작업 취소를 위한 Disposable에 대한 레퍼런스를 여기서 받음
+    }
+   
+    override fun onNext(t: Int) {
+        // Observable이 데이터를 전달할 때 호출
+    }
+    
+    override fun onError(e: Throwable) {
+       // Observable이 에러를 전달할 때 호출. Error시 Complete없이 종료다.
+    }
+}
+Observable.just(1, 2, 3, 4).subscribe(observer)
+```
 
 2. Consumer 방식 : 각각의 Consumer를 subscribe해서 소비자를 추가
 subscribe의 return  type은 Disposable
 
-    ```kotlin
-    val disposable: Disposable = Observable.just(1, 2, 3, 4)
-            .subscribe(
-                { println("onNext $it") }, // onNext: Consumer
-                { println("onError") }, // onError: Consumer
-                { println("onComplete") }, // onComplete: Consumer
-                { println("onSubscribe") } // onSubscribe: Consumer
-            )
-    ```
+```kotlin
+val disposable: Disposable = Observable.just(1, 2, 3, 4)
+     .subscribe(
+        { println("onNext $it") }, // onNext: Consumer
+        { println("onError") }, // onError: Consumer
+        { println("onComplete") }, // onComplete: Consumer
+        { println("onSubscribe") } // onSubscribe: Consumer
+     )
+```
 
 ### Observable
-
 0개에서 n개의 데이터를 전달하는 생산자
 
-### Single
 
+### Single
 오직 1개의 데이터를 전달하는 생산자
 결과가 1개의 데이터 또는 실패 인 경우 사용 (Http)
 
 ```kotlin
 // SingleObserver를 구현해 전달
 Single.just(1)
-				.subscribe(
-						{ println("onSuccess $it") },
-						{ println("onError") }
-				)
+    .subscribe(
+	{ println("onSuccess $it") },
+	{ println("onError") }
+    )
 ```
 
 
 ### Completable
-
 0개의 데이터를 전달하는 생산자
 DB에 insert, update와 같이 데이터가 필요 없이 성공 or 실패인 경우 사용
 
 ```kotlin
 // CompletableObserver 구현해 전달
 Completable.complete()
-					.subscribe(
-							{ println("onComplete") },
-							{ println("onError") }
-					)
+	.subscribe(
+	    { println("onComplete") },
+	    { println("onError") }
+	)
 
 Completable.fromAction(::completeAction)
         .subscribe(
@@ -129,30 +130,28 @@ fun completeAction() {
 }
 ```
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cf0897e1-c7c8-4fae-9dad-935f7983f726/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cf0897e1-c7c8-4fae-9dad-935f7983f726/Untitled.png)
+
 
 ### Maybe
-
 0개 또는 1개의 데이터를 전달하는 생산자
 
 ```kotlin
-		Maybe.just("Hello World")
-        .subscribe(
-            { println("onSuccess $it") },
-            { println("onError ${it.message}")  },
-            { println("onComplete") }
-        )
+Maybe.just("Hello World")
+    .subscribe(
+         { println("onSuccess $it") },
+         { println("onError ${it.message}")  },
+         { println("onComplete") }
+    )
 
-    Maybe.empty<Unit>()
-        .subscribe(
-            { println("onSuccess $it") },
-            { println("onError ${it.message}")  },
-            { println("onComplete") }
-        )
+Maybe.empty<Unit>()
+     .subscribe(
+         { println("onSuccess $it") },
+         { println("onError ${it.message}")  },
+         { println("onComplete") }
+     )
 ```
 
 ### Flowable
-
 데이터의 발행 속도가 구독자의 처리속도보다 크게 빠를때 사용
 BackPressure Issue를 처리하는 방법을 설정할 수 있음
 LiveData와 연계할 수 있음
@@ -160,45 +159,43 @@ LiveData와 연계할 수 있음
 ```kotlin
 // FloawbleSubscriber
 Flowable.just(1, 2, 3, 4)
-				.subscribe(
-					{ println("onNext $it") },
-					{ println("onError") },
-					{ println("onComplete") },
-					{ println("onSubscribe") }
-				)
+     .subscribe(
+	{ println("onNext $it") },
+	{ println("onError") },
+	{ println("onComplete") },
+	{ println("onSubscribe") }
+      )
 ```
 
 ## RxJava 연산자
 
 ### Create
-
 함수 내부에서 emitter가 직접 onNext, onComplete등으로 데이터를 전달하는 연산자
 
 ```kotlin
 Observable.create<String> { emitter -> 
-			emitter.onNext("Hello")
-			emitter.onNext("RxJava")
-			emitter.onComplete()
-		}.subscribe { println(it) }
+	emitter.onNext("Hello")
+	emitter.onNext("RxJava")
+	emitter.onComplete()
+    }.subscribe { println(it) }
 
 Observable.create<String> { emitter -> 
-			emitter.onNext("Hello")
-			emitter.onNext("RxJava")
-			emitter.onError(Throwable())
-			emitter.onComplete()
-		}.subscribe { println(it) }
+	emitter.onNext("Hello")
+	emitter.onNext("RxJava")
+	emitter.onError(Throwable())
+	emitter.onComplete()
+    }.subscribe { println(it) }
 ```
 
 
 ### defer
-
 ObservableSource를 리턴하는 Callable을 받는 연산자
 
 ```kotlin
 Observable.defer {
-		Observable.create<String> { emitter ->
-					emitter.onComplete()
-		}
+    Observable.create<String> { emitter ->
+	emitter.onComplete()
+    }
 }.subscribe(::println)
 ```
 
@@ -221,7 +218,7 @@ interval은 별도의 스레드에서 처리하기 때문에 Thread.sleep()을 �
 
 ```kotlin
 Observable.interval(100, TimeUnit.MILLSECONDS)
-		.subscribe(::println)
+	.subscribe(::println)
 Thread.sleep(300)
 ```
 
@@ -276,8 +273,8 @@ Thread.sleep(5000) // 별도의 스레드에서 처리하기 때문에 기다림
 
 ```kotlin
 Observable.fromIterable(0..5)
-		.map { "item = $it" }
-		.subscirbe(::println)
+	.map { "item = $it" }
+	.subscirbe(::println)
 ```
 
 
