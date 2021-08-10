@@ -26,17 +26,17 @@ RxJava Study
 
 ```
 fun main() {
-		val list = listOf(1, 2, 3, 4, 5)
+    val list = listOf(1, 2, 3, 4, 5)
 		
-		// 리스트(데이터)로 observable 인스턴스 생성
-		val observable: Observable<Int> = list.toObservable()
+    // 리스트(데이터)로 observable 인스턴스 생성
+    val observable: Observable<Int> = list.toObservable()
 
-		// observable 인스턴스 구독
-		observable.subscribeBy(
-				onNext = { println(it) },
-				onError = { it.printStackTrace() },
-				onComplete = { println("Complete!" }
-		)
+    // observable 인스턴스 구독
+    observable.subscribeBy(
+	onNext = { println(it) },
+	onError = { it.printStackTrace() },
+	onComplete = { println("Complete!" }
+    )
 }
 
 // 실행결과
@@ -104,7 +104,7 @@ Single.just(1)
 	{ println("onError") }
     )
 ```
-
+<img src="/img/single.png" width="500px" height="50px"></img><br/>
 
 ### Completable
 0개의 데이터를 전달하는 생산자
