@@ -153,7 +153,7 @@ Maybe.empty<Unit>()
          { println("onComplete") }
      )
 ```
-<img src="/img/.png" width="500px" height="100px"></img><br/>
+<img src="/img/maybe.png" width="500px" height="100px"></img><br/>
 
 ### Flowable
 데이터의 발행 속도가 구독자의 처리속도보다 크게 빠를때 사용
