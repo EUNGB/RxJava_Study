@@ -48,6 +48,7 @@ fun main() {
 Complete!
 ```
 
+
 소비자 등록 방식
 
 1. Observer 방식 : Observer 인터페이스를 구현한 객체를 subscribe해서 소비자를 추가
@@ -88,6 +89,7 @@ val disposable: Disposable = Observable.just(1, 2, 3, 4)
      )
 ```
 
+
 ### Observable
 0개에서 n개의 데이터를 전달하는 생산자
 
@@ -104,7 +106,8 @@ Single.just(1)
 	{ println("onError") }
     )
 ```
-<img src="/img/single.png" width="500px" height="50px"></img><br/>
+<img src="/img/single.png" width="500px" height="100px"></img><br/>
+
 
 ### Completable
 0개의 데이터를 전달하는 생산자
@@ -129,7 +132,7 @@ fun completeAction() {
     // DB insert or Update
 }
 ```
-
+<img src="/img/completable.png" width="500px" height="100px"></img><br/>
 
 
 ### Maybe
@@ -150,6 +153,7 @@ Maybe.empty<Unit>()
          { println("onComplete") }
      )
 ```
+<img src="/img/.png" width="500px" height="100px"></img><br/>
 
 ### Flowable
 데이터의 발행 속도가 구독자의 처리속도보다 크게 빠를때 사용
@@ -186,7 +190,7 @@ Observable.create<String> { emitter ->
 	emitter.onComplete()
     }.subscribe { println(it) }
 ```
-
+<img src="/img/create.png" width="500px" height="100px"></img><br/>
 
 ### defer
 ObservableSource를 리턴하는 Callable을 받는 연산자
@@ -207,13 +211,11 @@ Array, Iterable, Callable로부터 Observable을 만드는 연산자
 val items = arrayOf(1, 2, 3, 4)
 Observable.fromArray(*items).subscribe { println(it) }
 ```
-
+<img src="/img/from.png" width="500px" height="100px"></img><br/>
 
 
 ### interval
-
 주어진 주기대로 0부터 1씩 증가된 값을 만드는 연산자
-
 interval은 별도의 스레드에서 처리하기 때문에 Thread.sleep()을 통해 기다림
 
 ```kotlin
@@ -221,7 +223,7 @@ Observable.interval(100, TimeUnit.MILLSECONDS)
 	.subscribe(::println)
 Thread.sleep(300)
 ```
-
+<img src="/img/interval.png" width="500px" height="100px"></img><br/>
 
 ### just
 
@@ -231,17 +233,17 @@ Thread.sleep(300)
 Observable.just(1, 2, 3).subscribe(::println)
 ```
 
-### range
 
+### range
 range(start, count) : start부터 count만큼 1씩 증가한 데이터를 전달하는 연산자
 
 ```kotlin
 Observable.range(3, 10).subscribe(::println)
 ```
+<img src="/img/range.png" width="500px" height="100px"></img><br/>
 
 
 ### repeat
-
 Observable을 지정한 횟수만큼 반복시키는 연산자
 서버가 살아있는지 확인 할 때 많이 사용(ping)
 
@@ -249,10 +251,10 @@ Observable을 지정한 횟수만큼 반복시키는 연산자
 val observable = Observable.just("Hello", "World").repeat(3)
 observable.subscribe(::println)
 ```
+<img src="/img/repeat.png" width="500px" height="100px"></img><br/>
 
 
 ### timer
-
 정해진 시간 후 0을 전달하는 Observable을 반환
 interval과 비슷하지만, 일정 시간이 지난 후 한 개의 데이터를 발행하고 onComplete 이벤트 발생
 
@@ -263,14 +265,13 @@ println("Start TS = ${System.currentTimeMillis()}")
     }
 Thread.sleep(5000) // 별도의 스레드에서 처리하기 때문에 기다림
 ```
+<img src="/img/timer.png" width="500px" height="100px"></img><br/>
 
 
 ## 반환 연산자
 
 ### map
-
 데이터를 변환하는 연산자
-
 ```kotlin
 Observable.fromIterable(0..5)
 	.map { "item = $it" }
@@ -281,22 +282,20 @@ Observable.fromIterable(0..5)
 ## 필터링 연산자
 
 ### filter
-
 특정 조건에 맞는 데이터만 전달
-
 ```kotlin
 Observable.just(10, "100", true, "java",  19.4)
         .filter { it == "java"}
         .subscribe(::println)
 ```
+<img src="/img/filter.png" width="500px" height="100px"></img><br/>
 
 
 ### ofType
-
 특정 타입에 맞는 데이터만 전달, 전달 시 typecasting이 되어 있음
-
 ```kotlin
 Observable.just(10, "100", true, "java",  19.4)
 	.ofType(String::class.java)
 	.subscirbe(::println)
 ```
+<img src="/img/oftype.png" width="500px" height="100px"></img><br/>
